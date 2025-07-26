@@ -1,10 +1,10 @@
 ---
-- name: Deploy Docker container
+- name: Deploy Go App Container
   hosts: localhost
   become: true
   tasks:
     - name: Stop running container
-      shell: docker stop my-app || true && docker rm my-app || true
+      shell: docker stop go-app || true && docker rm go-app || true
 
     - name: Run Docker container
-      shell: docker run -d --name my-app -p 80:80 my-app
+      shell: docker run -d --name go-app -p 8080:8080 my-go-apis
