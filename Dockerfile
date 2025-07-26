@@ -1,14 +1,19 @@
-# Use the official Golang image as base
-FROM golang:1.23.0
+# ---- Build Stage ----
+FROM golang:1.23.0 as builder
 
-# Set working directory
 WORKDIR /app
 
-# Copy all files to container
 COPY . .
 
-# Build the Go app
 RUN go build -o myapp
 
-# Command to run the app
+# ---- Final Stage ----
+FROM debian:bullseye-slim
+
+WORKDIR /app
+
+# Copy only the binary from the builder stage
+COPY --from=builder /app/myapp .
+
+# Only run the binary (no shell or dev tools)
 CMD ["./myapp"]
